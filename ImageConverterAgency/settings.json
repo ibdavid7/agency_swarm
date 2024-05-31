@@ -1,0 +1,260 @@
+[
+    {
+        "id": "asst_6IakgDJzCGoNwCxZhb3VjiOi",
+        "created_at": 1717176086,
+        "description": "Oversees the entire image conversion process and coordinates with the ImageProcessor.",
+        "instructions": "# ImageConverterAgency Manifesto\n\nThe mission of the ImageConverterAgency is to provide a seamless and efficient way to convert .webp images into .png format. The agency will consist of agents that handle image processing and coordination. Each agent will function autonomously yet collaborate to achieve the common goal of image conversion.\n\n## Goals\n1. Convert .webp images to .png format efficiently.\n2. Ensure high-quality output images.\n3. Provide a user-friendly interface for image conversion.\n\n## Working Environment\nThe agents will operate in a Python environment, utilizing libraries such as PIL (Python Imaging Library) for image processing. The communication between agents will be synchronous, ensuring a smooth workflow and coordination.\n\n# ImageConverterCEO Agent Instructions\n\nYou are an agent that oversees the entire image conversion process and coordinates with the ImageProcessor. Your primary role is to manage the workflow and ensure that the image conversion tasks are executed efficiently.\n\n### Primary Instructions:\n1. Coordinate with the ImageProcessor agent to ensure images are processed as required.\n2. Manage the workflow and keep track of the conversion process.\n3. Ensure that all tasks are completed on time and meet the required standards.\n4. Report the status of the image conversion process to the user.\n5. Handle any issues that arise during the conversion process and coordinate with the necessary agents to resolve them.\n6. Continuously improve the workflow and processes to enhance efficiency and quality.\n",
+        "metadata": {},
+        "model": "gpt-4o",
+        "name": "ImageConverterCEO",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved. Do not send more than 1 message at a time.",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "const": "ImageProcessor",
+                                "enum": [
+                                    "ImageProcessor"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perform. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in separate message. Keep in mind, that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "ImageProcessor: Handles the conversion of .webp images to .png format.\n"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "default": null,
+                                "description": "Any additional instructions or clarifications that you would like to provide to the recipient agent.",
+                                "title": "Additional Instructions",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.3,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_YVuX6bqi50afGyg7rrDwf7wc",
+        "created_at": 1717176087,
+        "description": "Handles the conversion of .webp images to .png format.",
+        "instructions": "# ImageConverterAgency Manifesto\n\nThe mission of the ImageConverterAgency is to provide a seamless and efficient way to convert .webp images into .png format. The agency will consist of agents that handle image processing and coordination. Each agent will function autonomously yet collaborate to achieve the common goal of image conversion.\n\n## Goals\n1. Convert .webp images to .png format efficiently.\n2. Ensure high-quality output images.\n3. Provide a user-friendly interface for image conversion.\n\n## Working Environment\nThe agents will operate in a Python environment, utilizing libraries such as PIL (Python Imaging Library) for image processing. The communication between agents will be synchronous, ensuring a smooth workflow and coordination.\n\n# ImageProcessor Agent Instructions\n\nYou are an agent that handles the conversion of .webp images to .png format. Your primary role is to process images using the PIL (Python Imaging Library) and ensure high-quality output.\n\n### Primary Instructions:\n1. Receive .webp images for conversion.\n2. Use the PIL library to convert these images to .png format.\n3. Ensure that the converted images maintain high quality.\n4. Save the converted images to the specified location.\n5. Report the status of the conversion process to the ImageConverterCEO agent.\n6. Handle any issues that arise during the conversion process and report them to the ImageConverterCEO agent.\n",
+        "metadata": {},
+        "model": "gpt-4o",
+        "name": "ImageProcessor",
+        "object": "assistant",
+        "tools": [
+            {
+                "type": "code_interpreter"
+            },
+            {
+                "function": {
+                    "name": "ReceiveWebpImage",
+                    "description": "This tool receives .webp images for conversion. It accepts the image file as input and stores it temporarily for processing.",
+                    "parameters": {
+                        "properties": {
+                            "image_file": {
+                                "description": "The .webp image file to be received and stored temporarily for processing.",
+                                "format": "binary",
+                                "title": "Image File",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "image_file"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "HandleConversionIssues",
+                    "description": "This tool handles any issues that arise during the conversion process and reports them to the ImageConverterCEO agent. It accepts the error message as input and sends it to the ImageConverterCEO agent.",
+                    "parameters": {
+                        "properties": {
+                            "error_message": {
+                                "description": "The error message to be reported to the ImageConverterCEO agent.",
+                                "title": "Error Message",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "error_message"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "CreateMockWebpImage",
+                    "description": "This tool creates a mock .webp image file for testing purposes. It generates a simple image and saves it in .webp format.",
+                    "parameters": {
+                        "properties": {
+                            "image_width": {
+                                "default": 100,
+                                "description": "The width of the mock image to be created.",
+                                "title": "Image Width",
+                                "type": "integer"
+                            },
+                            "image_height": {
+                                "default": 100,
+                                "description": "The height of the mock image to be created.",
+                                "title": "Image Height",
+                                "type": "integer"
+                            },
+                            "image_color": {
+                                "default": "blue",
+                                "description": "The color of the mock image to be created.",
+                                "title": "Image Color",
+                                "type": "string"
+                            },
+                            "output_path": {
+                                "default": "mock_image.webp",
+                                "description": "The file path where the mock .webp image will be saved.",
+                                "title": "Output Path",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "required": []
+                    }
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "SaveConvertedImage",
+                    "description": "This tool saves the converted .png images to the specified location. It accepts the converted image file and the target location as input and saves the image accordingly.",
+                    "parameters": {
+                        "properties": {
+                            "converted_image_path": {
+                                "description": "The file path of the converted .png image to be saved.",
+                                "title": "Converted Image Path",
+                                "type": "string"
+                            },
+                            "target_location": {
+                                "description": "The target location where the .png image will be saved.",
+                                "title": "Target Location",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "converted_image_path",
+                            "target_location"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "ConvertWebpToPng",
+                    "description": "This tool uses the PIL library to convert .webp images to .png format. It ensures that the converted images maintain high quality.",
+                    "parameters": {
+                        "properties": {
+                            "webp_image_path": {
+                                "description": "The file path of the .webp image to be converted to .png format.",
+                                "title": "Webp Image Path",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "webp_image_path"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "ReportConversionStatus",
+                    "description": "This tool reports the status of the conversion process to the ImageConverterCEO agent. It accepts the status message as input and sends it to the ImageConverterCEO agent.",
+                    "parameters": {
+                        "properties": {
+                            "status_message": {
+                                "description": "The status message to be reported to the ImageConverterCEO agent.",
+                                "title": "Status Message",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "status_message"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.3,
+        "tool_resources": {
+            "code_interpreter": {
+                "file_ids": []
+            },
+            "file_search": null
+        },
+        "top_p": 1.0
+    }
+]
